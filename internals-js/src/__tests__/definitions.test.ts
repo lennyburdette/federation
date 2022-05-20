@@ -164,6 +164,25 @@ test('parse schema and modify', () => {
   expect(typeA).not.toHaveField('f1');
 });
 
+test.only('parse error', () => {
+  const subgraph = buildSubgraph('foo', '', `
+    extend schema @link(url: "https://specs.apollo.dev/federation/v2.0", import: ["@tag"]) {
+      query: Query
+    }
+
+    type Query {
+      hello: String
+    }`);
+    expect(subgraph.toString()).toMatchString(`
+    extend schema @link(url: "https://specs.apollo.dev/federation/v2.0", import: ["@tag"]) {
+      query: Query
+    }
+
+    type Query {
+      hello: String
+    }`);
+});
+
 test('removal of all directives of a schema', () => {
   const subgraph = buildSubgraph('foo', '', `
     schema @foo {
